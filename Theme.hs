@@ -7,11 +7,13 @@ import Clckwrks.Monad
 import Data.Text (Text)
 import Happstack.Server
 import HSP
+import Paths_clckwrks_theme_clckwrks (getDataDir)
 
 theme :: Theme
 theme = Theme
     { themeName      = "clckwrks"
     , _themeTemplate = pageTemplate
+    , themeDataDir   = getDataDir
     }
 
 pageTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
