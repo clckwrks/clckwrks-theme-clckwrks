@@ -24,13 +24,25 @@ pageTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
              -> headers
              -> body
              -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
-
 pageTemplate ttl hdr bdy =
+    do pid <- XMLGenT $ getPageId
+       case pid of
+         (PageId 1) -> home ttl hdr bdy
+         _          -> standardTemplate ttl hdr bdy
+
+standardTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
+                    , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
+                    ) =>
+                    Text
+                 -> headers
+                 -> body
+                 -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
+standardTemplate ttl hdr bdy =
     <html>
      <head>
       <title><% ttl %></title>
-      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css"        rel="stylesheet" media="screen" />
-      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
+--      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css"        rel="stylesheet" media="screen" />
+--      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
       <link rel="stylesheet" type="text/css" href=(ThemeData "style.css") />
       <link rel="stylesheet" type="text/css" href=(ThemeData "hscolour.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -52,16 +64,20 @@ pageTemplate ttl hdr bdy =
 
       </div>
 
-      <div class="container">
-       <div class="row">
+--      <div class="container">
+--       <div class="row">
 --        <h1><% getPageTitle %></h1>
         <% bdy %>
   --      <% getPageContent %>
-       </div>
-      </div>
+--       </div>
+--      </div>
       <script src="http://code.jquery.com/jquery-latest.js"></script>
      </body>
     </html>
+
+------------------------------------------------------------------------------
+-- blog
+------------------------------------------------------------------------------
 
 postsHTML :: XMLGenT (Clck ClckURL) XML
 postsHTML =
@@ -89,3 +105,52 @@ blog =
              <% postsHTML %>
             </div>
            </%>
+
+------------------------------------------------------------------------------
+-- home
+------------------------------------------------------------------------------
+
+summaryBox :: PageId -> String -> String -> GenXML (Clck ClckURL)
+summaryBox pid title iconURL =
+    <div class="summary-box">
+     <h2><% title %></h2>
+--     <img src=(ThemeData iconURL) />
+     <% getPageSummary pid %>
+     <p class="read-more"><a href=(ViewPage pid)>read more...</a></p>
+    </div>
+
+-- home :: XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
+home :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
+        , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
+        ) =>
+        Text
+     -> headers
+     -> body
+     -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
+home ttl hdr bdy =
+    standardTemplate "clckwrks.com" hdr $
+        <div id="homepage">
+
+         <div id="page-content">
+         <h1>clckwrks</h1>
+{-
+         <div id="logo">
+          <img src=(ThemeData "clckwrks-logo.png") />
+         </div>
+-}
+         <blockquote>
+--          <p><span class="big-quote">“</span>runs smoothly and invisibly<span class="big-quote">”</span> - <span class="quote-author">Katherine Durkes</span></p>
+          <p><span class="big-quote">“</span>An open-source CMS you can trust, built with the dexterity of Haskell.<span class="big-quote">”</span></p>
+         </blockquote>
+
+          <% bdy %>
+
+          <div class="summary-boxes">
+           <% summaryBox (PageId 8) "Why?" "philosophy-icon.png" %>
+           <% summaryBox (PageId 3) "Get Started" "7-icon.png" %>
+           <% summaryBox (PageId 2) "Get Involved" "8-icon.png" %>
+         </div>
+
+         </div>
+
+        </div>
