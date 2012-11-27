@@ -28,7 +28,7 @@ pageTemplate ttl hdr bdy =
     do pid <- XMLGenT $ getPageId
        case pid of
          (PageId 1) -> home ttl hdr bdy
-         _          -> standardTemplate ttl hdr bdy
+         _          -> standardTemplate ttl hdr <div id="page-content"><% bdy %></div>
 
 standardTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
                     , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
