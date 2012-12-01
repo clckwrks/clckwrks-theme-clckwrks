@@ -5,7 +5,6 @@ module Theme where
 import Clckwrks
 import Clckwrks.Monad
 import Data.Text (Text)
-import Happstack.Server
 import HSP
 import Paths_clckwrks_theme_clckwrks (getDataDir)
 
@@ -98,7 +97,7 @@ postHTML Page{..} =
 blog :: XMLGenT (Clck ClckURL) XML
 blog =
     do ttl <- lift getBlogTitle
-       pageTemplate ttl () $
+       standardTemplate ttl () $
            <%>
             <div id="blog-content">
              <h1 class="page-title"><% ttl %></h1>
