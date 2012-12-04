@@ -4,6 +4,8 @@ module Theme where
 
 import Clckwrks
 import Clckwrks.Monad
+import Clckwrks.ProfileData.Acid (HasRole(..))
+import qualified Data.Set        as Set
 import Data.Text (Text)
 import HSP
 import Paths_clckwrks_theme_clckwrks (getDataDir)
