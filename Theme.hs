@@ -50,6 +50,7 @@ standardTemplate ttl hdr bdy =
       <link rel="stylesheet" type="text/css" href=(ThemeData "style.css") />
       <link rel="stylesheet" type="text/css" href=(ThemeData "hscolour.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="http://code.jquery.com/jquery-latest.js"></script>
       <% hdr %>
       <% googleAnalytics %>
      </head>
@@ -75,7 +76,6 @@ standardTemplate ttl hdr bdy =
   --      <% getPageContent %>
 --       </div>
 --      </div>
-      <script src="http://code.jquery.com/jquery-latest.js"></script>
      </body>
     </html>
 
