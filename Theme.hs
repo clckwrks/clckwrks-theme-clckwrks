@@ -3,6 +3,7 @@
 module Theme where
 
 import Clckwrks
+import Clckwrks.Menu.API
 import Clckwrks.Monad
 import Clckwrks.ProfileData.Acid (HasRole(..))
 import qualified Data.Set        as Set
@@ -14,7 +15,7 @@ theme :: Theme
 theme = Theme
     { themeName      = "clckwrks"
     , _themeTemplate = pageTemplate
-    , themeBlog      = blog
+--     , themeBlog      = blog
     , themeDataDir   = getDataDir
     }
 
@@ -25,7 +26,8 @@ pageTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
              -> headers
              -> body
              -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
-pageTemplate ttl hdr bdy =
+pageTemplate ttl hdr bdy = standardTemplate ttl hdr bdy
+{-
     do pid <- XMLGenT $ getPageId
        case pid of
          (PageId 1) -> home ttl hdr bdy
@@ -33,7 +35,7 @@ pageTemplate ttl hdr bdy =
                                                  <h1 class="page-title"><% ttl %></h1>
                                                  <% bdy %>
                                                 </div>
-
+-}
 standardTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
                     , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
                     ) =>
@@ -82,7 +84,7 @@ standardTemplate ttl hdr bdy =
 ------------------------------------------------------------------------------
 -- blog
 ------------------------------------------------------------------------------
-
+{-
 postsHTML :: XMLGenT (Clck ClckURL) XML
 postsHTML =
     do posts <- getPosts
@@ -109,11 +111,11 @@ blog =
              <% postsHTML %>
             </div>
            </%>
-
+-}
 ------------------------------------------------------------------------------
 -- home
 ------------------------------------------------------------------------------
-
+{-
 summaryBox :: PageId -> String -> String -> GenXML (Clck ClckURL)
 summaryBox pid title iconURL =
     <div class="summary-box">
@@ -158,3 +160,4 @@ home ttl hdr bdy =
          </div>
 
         </div>
+-}
