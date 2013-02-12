@@ -3,7 +3,9 @@
 module Theme where
 
 import Clckwrks
-import Clckwrks.Menu.API
+import Clckwrks.Types        (NamedLink(..))
+import Clckwrks.NavBar.API   (getNavBarData)
+import Clckwrks.NavBar.Types (NavBar(..), NavBarItem(..))
 import Clckwrks.Monad
 import Clckwrks.ProfileData.Acid (HasRole(..))
 import qualified Data.Set        as Set
@@ -15,7 +17,6 @@ theme :: Theme
 theme = Theme
     { themeName      = "clckwrks"
     , _themeTemplate = pageTemplate
---     , themeBlog      = blog
     , themeDataDir   = getDataDir
     }
 
@@ -36,6 +37,30 @@ pageTemplate ttl hdr bdy = standardTemplate ttl hdr bdy
                                                  <% bdy %>
                                                 </div>
 -}
+
+
+genNavBar :: GenXML (Clck ClckURL)
+genNavBar =
+    do menu <- lift getNavBarData
+       navBarHTML menu
+
+navBarHTML :: NavBar -> GenXML (Clck ClckURL)
+navBarHTML (NavBar menuItems) =
+    <div class="navbar">
+     <div class="navbar-inner">
+      <div class="container">
+       <a class="brand" href="/">clckwrks</a>
+       <ul class="nav">
+        <% mapM mkNavBarItem menuItems %>
+       </ul>
+      </div>
+     </div>
+    </div>
+
+mkNavBarItem :: NavBarItem -> GenXML (Clck ClckURL)
+mkNavBarItem (NBLink (NamedLink ttl lnk)) =
+    <li><a href=lnk><% ttl %></a></li>
+
 standardTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
                     , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
                     ) =>
@@ -48,19 +73,32 @@ standardTemplate ttl hdr bdy =
      <head>
       <title><% ttl %></title>
 --      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css"        rel="stylesheet" media="screen" />
---      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
-      <link rel="stylesheet" type="text/css" href=(ThemeData "style.css") />
-      <link rel="stylesheet" type="text/css" href=(ThemeData "hscolour.css") />
+--      <link href="//bootswatch.com/simplex/bootstrap.min.css"        rel="stylesheet" media="screen" />
+      <link href="//bootswatch.com/spacelab/bootstrap.min.css" rel="stylesheet" media="screen" />
+      <link href="//bootswatch.com/css/bootswatch.css"         rel="stylesheet" media="screen" />
+      <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
+--      <link rel="stylesheet" type="text/css" href=(ThemeData "style.css") />
+--      <link rel="stylesheet" type="text/css" href=(ThemeData "hscolour.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="http://code.jquery.com/jquery-latest.js"></script>
       <% hdr %>
       <% googleAnalytics %>
      </head>
      <body>
+      <% genNavBar %>
+      <div class="container">
+        <div class="row">
+         <div class="span12">
+          <h1><% ttl %></h1>
+         </div>
+        </div>
+          <% bdy %>
+      </div>
+{-
       <div class="page-menu">
        <a href="/" id="menu-logo">clckwrks.com</a>
        <div class="menu-inner-div">
-        <% getMenu %>
+        <% getNavBar %>
       <% do mu <- getUserId
             case mu of
               Nothing  -> <span id="login-link"><a href=(Auth $ AuthURL A_Login)>Login</a></span>
@@ -77,7 +115,8 @@ standardTemplate ttl hdr bdy =
         <% bdy %>
   --      <% getPageContent %>
 --       </div>
---      </div>
+--      </div>-
+-}
      </body>
     </html>
 
