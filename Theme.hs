@@ -46,13 +46,15 @@ genNavBar =
 
 navBarHTML :: NavBar -> GenXML (Clck ClckURL)
 navBarHTML (NavBar menuItems) =
-    <div class="navbar">
+    <div class="navbar navbar-static-full-width">
      <div class="navbar-inner">
       <div class="container">
        <a class="brand" href="/">clckwrks</a>
-       <ul class="nav">
-        <% mapM mkNavBarItem menuItems %>
-       </ul>
+       <div class="nav-collapse">
+        <ul class="nav">
+         <% mapM mkNavBarItem menuItems %>
+        </ul>
+       </div>
       </div>
      </div>
     </div>
@@ -74,11 +76,11 @@ standardTemplate ttl hdr bdy =
       <title><% ttl %></title>
 --      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css"        rel="stylesheet" media="screen" />
 --      <link href="//bootswatch.com/simplex/bootstrap.min.css"        rel="stylesheet" media="screen" />
-      <link href="//bootswatch.com/spacelab/bootstrap.min.css" rel="stylesheet" media="screen" />
-      <link href="//bootswatch.com/css/bootswatch.css"         rel="stylesheet" media="screen" />
-      <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
---      <link rel="stylesheet" type="text/css" href=(ThemeData "style.css") />
---      <link rel="stylesheet" type="text/css" href=(ThemeData "hscolour.css") />
+--      <link href="//bootswatch.com/spacelab/bootstrap.min.css" rel="stylesheet" media="screen" />
+--      <link href="//bootswatch.com/css/bootswatch.css"         rel="stylesheet" media="screen" />
+--      <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
+      <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "bootstrap.css")  />
+--      <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "bootstrap-responsive.min.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="http://code.jquery.com/jquery-latest.js"></script>
       <% hdr %>
@@ -88,11 +90,15 @@ standardTemplate ttl hdr bdy =
       <% genNavBar %>
       <div class="container">
         <div class="row">
-         <div class="span12">
+         <div class="span8">
           <h1><% ttl %></h1>
          </div>
         </div>
+        <div class="row">
+         <div class="span8">
           <% bdy %>
+         </div>
+        </div>
       </div>
 {-
       <div class="page-menu">
