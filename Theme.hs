@@ -79,7 +79,7 @@ standardTemplate ttl hdr bdy =
 --      <link href="//bootswatch.com/spacelab/bootstrap.min.css" rel="stylesheet" media="screen" />
 --      <link href="//bootswatch.com/css/bootswatch.css"         rel="stylesheet" media="screen" />
 --      <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
-      <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "bootstrap.css")  />
+      <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "css/bootstrap.css")  />
 --      <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "bootstrap-responsive.min.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="http://code.jquery.com/jquery-latest.js"></script>

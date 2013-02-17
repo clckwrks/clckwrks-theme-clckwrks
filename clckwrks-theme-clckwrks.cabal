@@ -1,5 +1,5 @@
 name:                clckwrks-theme-clckwrks
-version:             0.3.1
+version:             0.3.2
 synopsis:            simple bootstrap based template for clckwrks
 homepage:            http://www.clckwrks.com/
 license:             BSD3
@@ -11,10 +11,12 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 data-files:
-  data/bootstrap.css
-  data/bootstrap.min.css
-  data/bootstrap-responsive.css
-  data/bootstrap-responsive.min.css
+  data/css/bootstrap.css
+  data/css/bootstrap.min.css
+  data/css/bootstrap-responsive.css
+  data/css/bootstrap-responsive.min.css
+  data/img/glyphicons-halflings-white.png
+  data/img/glyphicons-halflings.png
 
 source-repository head
     type:     darcs
