@@ -65,7 +65,7 @@ standardTemplate ttl hdr bdy =
      <head>
       <title><% ttl %></title>
       <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "css/bootstrap.css")  />
-      <link rel="stylesheet" type="text/css" href=(ThemeData "hscolour.css") />
+      <link rel="stylesheet" type="text/css" href=(ThemeData "css/hscolour.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="http://code.jquery.com/jquery-latest.js"></script>
       <% hdr %>
