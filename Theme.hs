@@ -72,14 +72,16 @@ standardTemplate ttl hdr bdy =
       <% googleAnalytics %>
      </head>
      <body>
-      <% genNavBar %>
-      <div class="container">
-        <div class="row">
-         <div class="span8">
-          <% bdy %>
+      <div id="wrap">
+       <% genNavBar %>
+       <div class="container">
+         <div class="row">
+          <div class="span8">
+           <% bdy %>
+          </div>
          </div>
-        </div>
-        <div id="push"></div>
+         <div id="push"></div>
+       </div>
       </div>
 
       <footer id="footer" class="footer">
