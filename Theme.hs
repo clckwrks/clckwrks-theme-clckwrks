@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleContexts, OverloadedStrings, RecordWildCards #-}
-{-# OPTIONS_GHC -F -pgmFtrhsx #-}
+{-# OPTIONS_GHC -F -pgmFhsx2hs #-}
 module Theme where
 
 import Clckwrks
@@ -9,8 +9,10 @@ import Clckwrks.NavBar.Types (NavBar(..), NavBarItem(..))
 import Clckwrks.Monad
 import Clckwrks.ProfileData.Acid (HasRole(..))
 import qualified Data.Set        as Set
-import Data.Text (Text)
-import HSP
+import Data.Text.Lazy (Text)
+import qualified Data.Text as T
+import HSP.XMLGenerator
+import HSP.XML                       (XML)
 import Paths_clckwrks_theme_clckwrks (getDataDir)
 
 theme :: Theme
@@ -23,7 +25,7 @@ theme = Theme
 pageTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
                 , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
                 ) =>
-                Text
+                T.Text
              -> headers
              -> body
              -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
@@ -56,7 +58,7 @@ mkNavBarItem (NBLink (NamedLink ttl lnk)) =
 standardTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
                     , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
                     ) =>
-                    Text
+                    T.Text
                  -> headers
                  -> body
                  -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
