@@ -18,18 +18,9 @@ import Paths_clckwrks_theme_clckwrks (getDataDir)
 theme :: Theme
 theme = Theme
     { themeName      = "clckwrks"
-    , _themeTemplate = standardTemplate
+    , themeStyles    = [standardStyle]
     , themeDataDir   = getDataDir
     }
-
-pageTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
-                , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
-                ) =>
-                T.Text
-             -> headers
-             -> body
-             -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
-pageTemplate ttl hdr bdy = standardTemplate ttl hdr bdy
 
 genNavBar :: GenXML (Clck ClckURL)
 genNavBar =
@@ -94,3 +85,12 @@ standardTemplate ttl hdr bdy =
 
      </body>
     </html>
+
+
+standardStyle :: ThemeStyle
+standardStyle = ThemeStyle
+    { themeStyleName        = "standard"
+    , themeStyleDescription = "standard view"
+    , themeStylePreview     = Nothing
+    , themeStyleTemplate    = standardTemplate
+    }
