@@ -42,6 +42,22 @@ navBarHTML (NavBar menuItems) =
         <ul class="nav">
          <% mapM mkNavBarItem menuItems %>
         </ul>
+
+        <span ng-controller="UsernamePasswordCtrl"><up-login-inline /></span>
+      <ul class="nav navbar-nav">
+--       <li><a href="#">some text</a></li>
+       <li ng-show="!isAuthenticated" ng-controller="OpenIdCtrl">
+         <openid-google />
+       </li>
+       <li ng-show="!isAuthenticated" ng-controller="OpenIdCtrl">
+         <openid-yahoo />
+       </li>
+      </ul>
+
+      <ul ng-show="isAuthenticated" class="nav navbar-nav">
+       <li><a ng-click="logout()" href="">signout</a></li>
+      </ul>
+
        </div>
       </div>
      </div>
@@ -60,23 +76,22 @@ standardTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
                  -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
 standardTemplate ttl hdr bdy = do
     p <- plugins <$> get
-    (Just authShowURL) <- getPluginRouteFn p (pluginName authenticatePlugin)
-    let passwordShowURL u = authShowURL (Auth $ AuthenticationMethods $ Just (passwordAuthenticationMethod, toPathSegments u)) []
+    (Just authRouteFn) <- getPluginRouteFn p (pluginName authenticatePlugin)
     <html>
      <head>
       <title><% ttl %></title>
       <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "data/css/bootstrap.css")  />
       <link rel="stylesheet" type="text/css" href=(ThemeData "data/css/hscolour.css") />
-      <script src="http://code.jquery.com/jquery-latest.js"></script>
+      <script src="//code.jquery.com/jquery-latest.js"></script>
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-route.min.js"></script>
-      <script src=(passwordShowURL UsernamePasswordCtrl)></script>
       <script src=(JS ClckwrksApp)></script>
+      <script src=(authRouteFn (Auth Controllers) [])></script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <% hdr %>
       <% googleAnalytics %>
      </head>
-     <body ng-app="clckwrksApp" ng-controller="AuthenticationCtrl">
+     <body ng-app="clckwrksApp" ng-controller="AuthenticationCtrl as auth">
       <div id="wrap">
        <% genNavBar %>
        <div class="container">
