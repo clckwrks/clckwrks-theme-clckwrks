@@ -34,12 +34,10 @@ genNavBar :: GenXML (Clck ClckURL)
 genNavBar =
     do menu  <- lift getNavBarData
        mName <- query GetSiteName
-       openId <- query GetEnableOpenId
-       navBarHTML (fromMaybe "clckwrks" mName) openId menu
+       navBarHTML (fromMaybe "clckwrks" mName) menu
 
 -- | helper function to generate a navigation bar from the navigation bar data
 navBarHTML :: T.Text   -- ^ brand
-           -> Bool     -- ^ enable OpenId
            -> NavBar -- ^ navigation bar links
            -> GenXML (Clck ClckURL)
 navBarHTML brand (NavBar menuItems) = [hsx|
@@ -67,10 +65,6 @@ navBarHTML brand (NavBar menuItems) = [hsx|
        <up-login-inline />
       </span>
 
-      <% if enableOpenId
-            then [openIdHtml] else []
-       %>
-
       <span up-authenticated=True class="navbar-left navbar-text">
        <a ng-click="logout()" href="">Logout {{claims.user.username}}</a>
       </span>
@@ -78,13 +72,6 @@ navBarHTML brand (NavBar menuItems) = [hsx|
   </div>  -- /.container-fluid
  </nav>
     |]
-  where
-      -- navbar-text would make more sense than navbar-form, but it shifts the images funny. :-/
-    openIdHtml =
-      [hsx| <span class="navbar-left navbar-btn" ng-controller="OpenIdCtrl" ng-show="!isAuthenticated">
-              <openid-yahoo />
-            </span>
-          |]
 
 mkNavBarItem :: NavBarItem -> GenXML (Clck ClckURL)
 mkNavBarItem (NBLink (NamedLink ttl lnk)) =
